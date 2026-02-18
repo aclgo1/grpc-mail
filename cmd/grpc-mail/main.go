@@ -12,6 +12,7 @@ import (
 	"github.com/aclgo/grpc-mail/config"
 	"github.com/aclgo/grpc-mail/e2e"
 	"github.com/aclgo/grpc-mail/internal/adapters/gmail"
+	"github.com/aclgo/grpc-mail/internal/adapters/mailersend"
 	"github.com/aclgo/grpc-mail/internal/adapters/ses"
 	"github.com/aclgo/grpc-mail/internal/mail"
 	grpcService "github.com/aclgo/grpc-mail/internal/mail/delivery/grpc/service"
@@ -43,13 +44,16 @@ func main() {
 
 	ses := ses.NewSes(cfg)
 	gmail := gmail.NewGmail(cfg)
+	mailerSend := mailersend.NewMailerSend(cfg)
 
 	sesUC := usecase.NewmailUseCase(ses, logger)
 	gmailUC := usecase.NewmailUseCase(gmail, logger)
+	mailerSendUC := usecase.NewmailUseCase(mailerSend, logger)
 
 	servicesHttpLoad := []*httpService.MailServiceLoad{
 		httpService.NewMailServiceLoad("ses", sesUC),
 		httpService.NewMailServiceLoad("gmail", gmailUC),
+		httpService.NewMailServiceLoad("mailersend", mailerSendUC),
 	}
 
 	// HTTP services
@@ -67,6 +71,7 @@ func main() {
 		observer,
 		grpcService.NewMailServiceLoad("ses", sesUC),
 		grpcService.NewMailServiceLoad("gmail", gmailUC),
+		grpcService.NewMailServiceLoad("mailersend", mailerSendUC),
 	)
 
 	server := server.NewServer(cfg,

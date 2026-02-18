@@ -116,7 +116,7 @@ func (m *MailService) SendService(ctx context.Context) http.HandlerFunc {
 
 		spanProccessing.AddEvent("send-mail")
 
-		if err := svc.Send(&data); err != nil {
+		if err := svc.Send(ctx, &data); err != nil {
 			m.logger.Errorf("SendService.Send: %v", err)
 			sendFail.Add(context.Background(), 1)
 

@@ -1,6 +1,7 @@
 package gmail
 
 import (
+	"context"
 	"fmt"
 	"net/smtp"
 
@@ -34,7 +35,7 @@ func NewGmail(config *config.Config) *Gmail {
 	return &gmail
 }
 
-func (g *Gmail) Send(data *models.MailBody) error {
+func (g *Gmail) Send(ctx context.Context, data *models.MailBody) error {
 
 	bodyMessage := func() string {
 		if data.Template != "" {
@@ -53,7 +54,7 @@ func (g *Gmail) Send(data *models.MailBody) error {
 		[]string{data.To},
 		[]byte(bodyMessage),
 	); err != nil {
-		return errors.Wrap(err, "Send.smtp.SendMail")
+		return errors.Wrap(err, "smtp.SendMail")
 	}
 
 	return nil

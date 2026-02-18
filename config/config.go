@@ -14,12 +14,14 @@ type Config struct {
 	ServiceHTTPPort int           `mapstructure:"API_HTTP_PORT"`
 	ServiceGRPCPort int           `mapstructure:"API_GRPC_PORT"`
 	IntervalSend    time.Duration `mapstructure:"INTERVAL_SEND"`
-	Logger
-	Tracer
-	Meter
-	OtelExporter string `mapstructure:"OTEL_EXPORTER"`
-	Gmail
-	Ses
+	Logger          `mapstructure:",squash"`
+	Tracer          `mapstructure:",squash"`
+	Meter           `mapstructure:",squash"`
+	OtelExporter    string `mapstructure:"OTEL_EXPORTER"`
+	Gmail           `mapstructure:",squash"`
+	Ses             `mapstructure:",squash"`
+	MailerSend      `mapstructure:",squash"`
+	SendGrid        `mapstructure:",squash"`
 }
 
 type Logger struct {
@@ -47,6 +49,14 @@ type Gmail struct {
 	Password string `mapstructure:"GMAIL_PASSWORD"`
 	Host     string `mapstructure:"GMAIL_HOST"`
 	Port     int    `mapstructure:"GMAIL_PORT"`
+}
+
+type MailerSend struct {
+	ApiKey string `mapstructure:"MAILERSEND_API_KEY"`
+}
+
+type SendGrid struct {
+	SendGridApiKey string `mapstructrure:"SENDGRID_API_KEY"`
 }
 
 func Load(path string) *Config {

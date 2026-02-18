@@ -1,6 +1,8 @@
 package ses
 
 import (
+	"context"
+
 	"github.com/aclgo/grpc-mail/config"
 	"github.com/aclgo/grpc-mail/internal/models"
 )
@@ -19,6 +21,6 @@ func (s *Ses) Connect(data *models.MailBody) error {
 	return nil
 }
 
-func (s *Ses) Send(data *models.MailBody) error {
+func (s *Ses) Send(ctx context.Context, data *models.MailBody) error {
 	return nil
 }

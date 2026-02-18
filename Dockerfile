@@ -13,6 +13,9 @@ WORKDIR /app
 
 COPY --from=builder /app/mail ./
 COPY --from=builder /app/.env ./
+
+COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
+
 EXPOSE 3003
 EXPOSE 50053
 

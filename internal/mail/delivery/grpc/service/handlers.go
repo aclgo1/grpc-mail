@@ -52,7 +52,7 @@ func (s *MailService) SendService(ctx context.Context, req *proto.MailRequest) (
 	}
 
 	span.AddEvent("send-mail")
-	err := svc.Send(data)
+	err := svc.Send(ctx, data)
 	if err != nil {
 		sendFail.Add(context.Background(), 1)
 		span.SetStatus(otelCodes.Error, err.Error())

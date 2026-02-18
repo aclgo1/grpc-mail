@@ -1,6 +1,8 @@
 package mail
 
 import (
+	"context"
+
 	"github.com/aclgo/grpc-mail/internal/models"
 	"github.com/aclgo/grpc-mail/pkg/logger"
 	"go.opentelemetry.io/otel/metric"
@@ -8,7 +10,7 @@ import (
 )
 
 type MailUseCase interface {
-	Send(*models.MailBody) error
+	Send(context.Context, *models.MailBody) error
 }
 
 type Observer struct {
