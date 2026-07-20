@@ -20,6 +20,7 @@ import (
 	"github.com/aclgo/grpc-mail/internal/mail/usecase"
 	"github.com/aclgo/grpc-mail/internal/server"
 	"github.com/aclgo/grpc-mail/internal/telemetry"
+	grpcauth "github.com/aclgo/grpc-mail/pkg/grpc_auth"
 	"github.com/aclgo/grpc-mail/pkg/logger"
 )
 
@@ -41,6 +42,8 @@ func main() {
 	observer := mail.NewObserver(logger, tracer, meter)
 
 	logger.Info("observer init")
+
+	auth := grpcauth.NewGrpcAuth(cfg)
 
 	ses := ses.NewSes(cfg)
 	gmail := gmail.NewGmail(cfg)
@@ -78,6 +81,7 @@ func main() {
 		logger,
 		handlerHTTP,
 		servicesGRPC,
+		auth,
 	)
 
 	signal, stop := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM)

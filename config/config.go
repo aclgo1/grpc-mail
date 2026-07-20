@@ -14,6 +14,7 @@ type Config struct {
 	ServiceHTTPPort int           `mapstructure:"API_HTTP_PORT"`
 	ServiceGRPCPort int           `mapstructure:"API_GRPC_PORT"`
 	IntervalSend    time.Duration `mapstructure:"INTERVAL_SEND"`
+	PathPublicPem   string        `mapstructure:"PATH_PUBLIC_PEM"`
 	Logger          `mapstructure:",squash"`
 	Tracer          `mapstructure:",squash"`
 	Meter           `mapstructure:",squash"`

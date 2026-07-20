@@ -1,12 +1,14 @@
 module github.com/aclgo/grpc-mail
 
-go 1.20
+go 1.21
+
+toolchain go1.24.4
 
 require (
+	github.com/golang-jwt/jwt/v5 v5.3.1
 	github.com/mailersend/mailersend-go v1.6.2
 	github.com/pkg/errors v0.9.1
 	github.com/redis/go-redis/v9 v9.2.1
-	github.com/sendgrid/sendgrid-go v3.16.1+incompatible
 	github.com/spf13/viper v1.16.0
 	go.opentelemetry.io/otel v1.21.0
 	go.opentelemetry.io/otel/exporters/otlp/otlpmetric/otlpmetricgrpc v0.42.0
@@ -37,7 +39,6 @@ require (
 	github.com/mitchellh/mapstructure v1.5.0 // indirect
 	github.com/openzipkin/zipkin-go v0.4.2 // indirect
 	github.com/pelletier/go-toml/v2 v2.0.8 // indirect
-	github.com/sendgrid/rest v2.6.9+incompatible // indirect
 	github.com/spf13/afero v1.9.5 // indirect
 	github.com/spf13/cast v1.5.1 // indirect
 	github.com/spf13/jwalterweatherman v1.1.0 // indirect

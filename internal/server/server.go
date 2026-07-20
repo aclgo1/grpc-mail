@@ -11,6 +11,7 @@ import (
 	grpcService "github.com/aclgo/grpc-mail/internal/mail/delivery/grpc/service"
 	httpService "github.com/aclgo/grpc-mail/internal/mail/delivery/http/service"
 	"github.com/aclgo/grpc-mail/internal/server/interceptors"
+	grpcauth "github.com/aclgo/grpc-mail/pkg/grpc_auth"
 	"github.com/aclgo/grpc-mail/pkg/logger"
 	"github.com/aclgo/grpc-mail/proto"
 
@@ -23,6 +24,7 @@ type Server struct {
 	serviceHTTP  *HttpHandlerService
 	servicesGRPC *grpcService.MailService
 	stopFn       sync.Once
+	grpcAuth     *grpcauth.GrpcAuth
 }
 
 type HttpHandlerService struct {
@@ -43,12 +45,14 @@ func NewHttpHandlerService(
 func NewServer(cfg *config.Config,
 	logger logger.Logger,
 	svcHTTP *HttpHandlerService,
-	svcsGRPC *grpcService.MailService) *Server {
+	svcsGRPC *grpcService.MailService,
+	grpcAuth *grpcauth.GrpcAuth) *Server {
 	return &Server{
 		config:       cfg,
 		logger:       logger,
 		serviceHTTP:  svcHTTP,
 		servicesGRPC: svcsGRPC,
+		grpcAuth:     grpcAuth,
 	}
 }
 
@@ -118,6 +122,7 @@ func (s *Server) grpcRun() error {
 
 	opts := []grpc.ServerOption{
 		grpc.UnaryInterceptor(interceptorGRPC.Logger),
+		grpc.ChainUnaryInterceptor(s.grpcAuth.AuthInterceptor),
 	}
 
 	srv := grpc.NewServer(opts...)
